@@ -14,7 +14,7 @@ public:
     void print(std::ostream& out) const;
     String& operator=(String other);
     std::size_t find(const char* str) const;
-    String warp(size_t width) const;
+    String wrap(size_t width) const;
 private:
     char* data_;
     std::size_t size_;

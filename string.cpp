@@ -67,17 +67,38 @@ void String::print(std::ostream& out) const{
     
 }
 
-String String::warp(size_t width) const{
+String String::wrap(std::size_t width) const {
     String res{};
-    String temp_data;
+    String temp_data{};
     std::size_t count = 0;
-    for(std::size_t i = 0; i < size_; ++i){
-        if (data_[i] != ' '){
-            temp_data.append(&data_[i]); //Доделать
+
+    for (std::size_t i = 0; i <= size_; ++i) {
+        if (i < size_ && data_[i] != ' ') {
+            char ch[2] = {data_[i], '\0'};
+            temp_data.append(ch);
+        } else {
+            if (temp_data.size_ > 0) {
+                std::size_t word_length = temp_data.size_;
+
+                if (count > 0 && count + 1 + word_length > width) {
+                    const char newline[] = "\n";
+                    res.append(newline);
+                    count = 0;
+                } else if (count > 0) {
+                    const char space[] = " ";
+                    res.append(space);
+                    ++count;
+                }
+
+                res.append(temp_data.data_);
+                count += word_length;
+
+                temp_data = String{};
+            }
         }
-        
-    } 
-    
+    }
+
+    return res;
 }
 
 std::size_t String::count_length(const char* str) const{
